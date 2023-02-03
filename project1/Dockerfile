@@ -1,24 +1,22 @@
+# Because the image has layer based architecture and caches every command.
+# If I modifuy the code of the app, would run all commands from there. That is why this Image can be optimized:
+
+
 # Chose the image that we need from Docker hub for environment
 FROM node
 
-#BEFORE I copy the directory to the Image I choose WHERE I run the commands later (Absolute path)
 WORKDIR /image
+# First I copy only the package JSON
 
-# copy everything in the path od Docker file to the pat in /image
-# If I write COPY . ./ Docker will know the second path points to /image, I keep like this because it is more understandable
-COPY . /image
-
-# Command to install the dependencies into the image
+COPY package.json /image
+# Then I Install the dependencies
 RUN npm install
 
-#Command to expose the port to our local system
-# EXPOSE 80 in the Dockerfile in the end is optional. It documents that a process in the container will expose this port.
-# This line is to document that the command should be > docker run -p 3000:80 <image id generated in build>
+# I copy the rest of the App.
+COPY . /image
+
 EXPOSE 80
 
-#Command  to run the server If I use RUN node server.js it would use the node.js from code. Using CMD I will use the node.js from /image
-# This is aldo possible ---> CMD node server.js
-#This is always the last instruction
 CMD ["node","server.js"]
 
 # After this in command Line:
