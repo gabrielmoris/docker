@@ -30,17 +30,20 @@ app.post("/create", async (req, res) => {
 
   const tempFilePath = path.join(__dirname, "temp", adjTitle + ".txt");
   const finalFilePath = path.join(__dirname, "feedback", adjTitle + ".txt");
-
-  await fs.writeFile(tempFilePath, content);
-  exists(finalFilePath, async (exists) => {
-    if (exists) {
-      res.redirect("/exists");
-    } else {
-      await fs.copyFile(tempFilePath, finalFilePath);
-      await fs.unlink(tempFilePath);
-      res.redirect("/");
-    }
-  });
+  try {
+    await fs.writeFile(tempFilePath, content);
+    exists(finalFilePath, async (exists) => {
+      if (exists) {
+        res.redirect("/exists");
+      } else {
+        await fs.copyFile(tempFilePath, finalFilePath);
+        await fs.unlink(tempFilePath);
+        res.redirect("/");
+      }
+    });
+  } catch (e) {
+    console.log(e);
+  }
 });
 
 app.listen(80);

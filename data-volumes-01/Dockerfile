@@ -16,5 +16,16 @@ COPY . .
 
 EXPOSE 80
 
-# docker run -p 3000:80 -d --rm --name feedback-app -v feedback:/app/feedback feedback-node
-CMD ["node","server.js"]
+
+# If I want too use a Bind Mounts (to check the image)
+# docker run -p 3000:80 -d --rm --name feedback-app -v feedback:/app/feedback -v $(pwd):/app feedback-node
+# for this I must add an anonymousse volume with the node modules or make it in the command
+# VOLUME ["/app/node_modules"]
+
+# CREATE IMAGE
+# docker build -t feedback-node:volumes 
+
+# RUN CAONTAINER
+# docker run -p 3000:80 -d --rm --name feedback-app -v feedback:/app/feedback -v $(pwd):/app -v /app/node_modules feedback-node:volumes
+
+CMD ["npm","start"]
