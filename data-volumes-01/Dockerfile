@@ -20,7 +20,7 @@ EXPOSE 80
 
 
 # If I want too use a Bind Mounts (to check the image)
-# docker run -p 3000:80 -d --rm --name feedback-app -v feedback:/app/feedback -v $(pwd):/app feedback-node
+
 # for this I must add an anonymousse volume with the node modules or make it in the command
 # VOLUME ["/app/node_modules"]
 
@@ -29,5 +29,6 @@ EXPOSE 80
 
 # RUN CAONTAINER
 # docker run -p 3000:80 -d --rm --name feedback-app -v feedback:/app/feedback -v $(pwd):/app -v /app/node_modules feedback-node:volumes
+#                       \_/ dettached mode            \_ named volume uploads_/ \_N. V. app_/  \_N. V. node_modules_/ \_image_/
 
 CMD ["npm","start"]
