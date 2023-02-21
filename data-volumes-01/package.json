@@ -6,7 +6,9 @@
   "author": "Maximilian Schwarzmüller / Academind GmbH",
   "license": "ISC",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "dockerBuildVol": "docker build -t feedback-node:volumes",
+    "dockerRunVolumes": "docker run -p 3000:80 -d --rm --name feedback-app -v feedback:/app/feedback -v $(pwd):/app:ro -v app/temp -v /app/node_modules feedback-node:volumes"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

@@ -6,6 +6,7 @@ COPY package.json .
 
 RUN npm install
 
+# If i use bind mount I dont need to copy but It is neccesary for Production
 COPY . .
 
 # Creates a persistent ANONYMOUSE file in our local machine to store the files in the containet /app/feedback
