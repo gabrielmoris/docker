@@ -15,8 +15,11 @@ COPY . .
 # INSTEAD I will create a named volume inside of the run command adding: -v feedback:/app/feedback
 # To remove: docker volume rm VOL_NAME
 
+# This argument can be used here, for example in the .env
+ARG DEFAULT_PORT=80
+
 # Here I create an enviromnmental variable and I assign it in EXPOSE. This variable is accesible on the entire app code via process.env.PORT
-ENV PORT 80
+ENV PORT $DEFAULT_PORT
 
 EXPOSE $PORT
 # Here I am creating a detached app that has a Volume named feedback that will be bounded to the actual app and a anonnymouse volume 
