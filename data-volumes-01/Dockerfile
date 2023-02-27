@@ -15,7 +15,10 @@ COPY . .
 # INSTEAD I will create a named volume inside of the run command adding: -v feedback:/app/feedback
 # To remove: docker volume rm VOL_NAME
 
-EXPOSE 80
+# Here I create an enviromnmental variable and I assign it in EXPOSE. This variable is accesible on the entire app code via process.env.PORT
+ENV PORT 80
+
+EXPOSE $PORT
 # Here I am creating a detached app that has a Volume named feedback that will be bounded to the actual app and a anonnymouse volume 
 # that is bounded to node_modules. Both volumes will coexist. The reason is that the volume shouldn´t write in my local machine, that is why I need 2 different volumes.
 
