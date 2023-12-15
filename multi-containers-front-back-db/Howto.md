@@ -52,3 +52,10 @@ With the command `-e MONGO_INITDB_ROOT_USERNAME=gabriel -e MONGO_INITDB_ROOT_PAS
 
     docker run --name goals-frontend -v /home/moris/learning/docker/multi-containers-front-back-db/frontend/src:/app/src --rm -d -p 3000:3000 -it goals-react
 ```
+
+# Run Containers with docker compose
+
+- To start in detached mode `docker compose up -d`
+- To stop and delete volumes `docker compose down -v`
+- To start and force build `docker compose up --build`
+- To just build only the images `docker compose build`

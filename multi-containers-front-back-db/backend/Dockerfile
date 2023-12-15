@@ -10,7 +10,8 @@ COPY . .
 
 EXPOSE 80
 
-ENV MONGODB_USERNAME=gabriel
-ENV MONGODB_PASSWORD=secret
+# Not needed if declared in docker-compose
+# ENV MONGODB_USERNAME=gabriel
+# ENV MONGODB_PASSWORD=secret
 
 CMD ["npm","start"]
