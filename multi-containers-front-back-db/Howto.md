@@ -3,7 +3,7 @@
 with the command `-v data:/data/db` I create a volume where data persists after container is stopped
 `docker run --name mongodb -v data:/data/db --rm -d -p 27017:27017 mongo`
 
-# Create Images
+# Build Images
 
 ### Backend
 
@@ -16,6 +16,10 @@ In the mongoose connect We have to listen `'mongodb://host.docker.internal:27017
 `docker build -t goals-react .`
 
 # Run Containers Isolated but connected
+
+### Database
+
+`docker run --name mongodb -v data:/data/db --rm -d -p 27017:27017 mongo`
 
 ### Backend
 
@@ -46,5 +50,5 @@ With the command `-e MONGO_INITDB_ROOT_USERNAME=gabriel -e MONGO_INITDB_ROOT_PAS
 
     docker run --name goals-backend -v /home/moris/learning/docker/multi-containers-front-back-db/backend:/app -v logs:/app/logs -v /app/node_modules --rm -d -p 80:80 --network goals-net goals-node
 
-    docker run --name goals-frontend --rm -d -p 3000:3000 -it goals-react
+    docker run --name goals-frontend -v /home/moris/learning/docker/multi-containers-front-back-db/frontend/src:/app/src --rm -d -p 3000:3000 -it goals-react
 ```
