@@ -1,11 +1,24 @@
 {
-  "name": "app",
+  "name": "docker-compose-test",
   "version": "1.0.0",
-  "description": "Containers that serve a specific purpose or provide utilities rather than running a specific application. These containers are designed to perform tasks such as system administration, monitoring, debugging, or providing specific services to other containers in the Docker ecosystem.",
+  "description": "generated file from npm using an utility container in docker-compose",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "index.js"
   },
-  "author": "",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabrielmoris/docker.git"
+  },
+  "keywords": [
+    "docker",
+    "compose",
+    "npm"
+  ],
+  "author": "gabrielcmoris",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gabrielmoris/docker/issues"
+  },
+  "homepage": "https://github.com/gabrielmoris/docker#readme"
 }

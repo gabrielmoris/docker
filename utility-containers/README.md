@@ -28,5 +28,9 @@ I will need to use this command to execute node commands
 
 1. Create image
    `docker build -t node-util .`
-2. Run container
-   `docker run -it -v /home/moris/learning/docker/utility-containers:/app node-util npm init`
+2. Run container with the volume in the absolute path of the folder
+   `docker run -it -v /home/moris/learning/docker/utility-containers:/app node-util init`
+
+## Create utility container with docker-compose
+
+`docker-compose run --rm npm <command>`
