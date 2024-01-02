@@ -1,0 +1,11 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "Containers that serve a specific purpose or provide utilities rather than running a specific application. These containers are designed to perform tasks such as system administration, monitoring, debugging, or providing specific services to other containers in the Docker ecosystem.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
