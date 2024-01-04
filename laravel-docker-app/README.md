@@ -4,15 +4,21 @@
 version: "3.8"
 services:
   server:
-    image: "nginx:stable-alpine" # This is a light image of nginx server
+    # image: "nginx:stable-alpine" # This is a light image of nginx server
+    build: # Instead of using an image I create a dockerfile specific for nginx
+      context: .
+      dockerfile: dockerfiles/nginx.dockerfile
     ports:
       - "8000:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro # :ro means "read-only."
+    depends_on:
+      - php
+      - mysql
   php:
     build:
-      context: ./dockerfiles # where is the folder to build
-      dockerfile: php.dockerfile # which is the document with the dockerfile information
+      context: . # where is the folder of the context
+      dockerfile: dockerfiles/php.dockerfile # which is the document with the dockerfile information
     volumes:
       - ./src:/var/www/html:delegated # :delegated optimizes the performance of the volume mount by prioritizing the container's performance over consistency
     # ports:
@@ -29,8 +35,8 @@ services:
       - ./src:/var/www/html
   artisan:
     build:
-      context: ./dockerfiles
-      dockerfile: php.dockerfile
+      context: .
+      dockerfile: dockerfiles/php.dockerfile
     volumes:
       - ./src:/var/www/html
     entrypoint: ["php", "/var/www/html/artisan"] # this will override the php.dockerfile executing this file from the laravel folder (./src)
