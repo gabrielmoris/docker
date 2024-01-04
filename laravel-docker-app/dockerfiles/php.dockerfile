@@ -2,6 +2,10 @@ FROM php:8.1-fpm-alpine
 
 USER root
 
+WORKDIR /var/www/html
+
+COPY src .
+
 RUN apk update && \
     apk add --no-cache \
         $PHPIZE_DEPS \
@@ -10,6 +14,6 @@ RUN apk update && \
 
 RUN addgroup -g 1000 moris && adduser -G moris -g moris -s /bin/sh -D moris
 
-USER moris
+RUN chown -R moris:moris /var/www/html
 
-WORKDIR /var/www/html
+USER moris

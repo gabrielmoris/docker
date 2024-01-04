@@ -27,15 +27,24 @@ services:
       dockerfile: composer.dockerfile
     volumes:
       - ./src:/var/www/html
+  artisan:
+    build:
+      context: ./dockerfiles
+      dockerfile: php.dockerfile
+    volumes:
+      - ./src:/var/www/html
+    entrypoint: ["php", "/var/www/html/artisan"] # this will override the php.dockerfile executing this file from the laravel folder (./src)
+  npm:
+    image: node:14
+    working_dir: /var/www/html
+    entrypoint: ["npm"]
+    volumes:
+      - ./src:/var/www/html
 ```
 
 # Start service
 
-## build images
-
-`docker-compose build`
-
-## Create laravel app
+## Create the laravel app (./src should be empty)
 
 It is possile to run only one service with docker-compose. It is usefull for utility containers:
 `docker-compose run --rm composer create-project --prefer-dist laravel/laravel:^8.0 .`
@@ -44,14 +53,19 @@ It is possile to run only one service with docker-compose. It is usefull for uti
 
 ```
 DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
+DB_HOST=mysql
 DB_PORT=3306
 DB_DATABASE=homestead
 DB_USERNAME=homestead
 DB_PASSWORD=secret
 ```
 
-## Start other services
+## Start main services
 
 adding `--build` will force docker-compose to rebuild the images if sth changes
 `docker-compose up -d --build server php mysql`
+
+## start a command with artisan or npm, for example migrate
+
+`docker-compose run --rm artisan migrate`
+`docker-compose run --rm npm -v`
