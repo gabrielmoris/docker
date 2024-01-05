@@ -1,8 +1,8 @@
 # Main notes
 
-- In Prod I dont need Volumes to do ing-mounts.
+- In Prod I dont need Volumes to do bind-mounts.
 
-## Deployment-01-starting-setup.
+## Deployment-01-starting-setup (do it yourself Approach).
 
 I can do it in 3 simple steps:
 
@@ -45,4 +45,6 @@ docker version
 
 ### 3. Configure Security group to expose all required ports to WWW
 
-    a) Back in aws in instances I can see the ipv4 to reach the app. But still is not public, In the tab of the left I can go to "Security groups" and there I can see the security group created with my instance and the other ones
+    a) Back in aws in instances I can see the ipv4 to reach the app. But still is not public, In the tab of the left I can go to "Security groups" and there I can see the security group created with my instance and the other ones I have.
+    b) I click on the security group of the instance. I click on edit the Inbound rules.
+    c) I add a new rule: Type: http, Source: Anywhere and save. Copu the ipv4 of the instance and paste it on the browser.
