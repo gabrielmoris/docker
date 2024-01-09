@@ -64,4 +64,16 @@ NOTE: To update the app I make the changes locally, I reupload to docker hub, go
 
 ## Deployment multiple containers with a Managed Remote Machine with AWS ECS.
 
-- Build the image `docker build`
+- We have to make a change in the docker connection endpoint for ECS:
+  `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@mongodb:27017/course-goals?authSource=admin`
+  should be changed to:
+  `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_URL}:27017/course-goals?authSource=admin`
+  , add in the /env/backend.env `MONGODB_URL=mongodb`, and in the backend Dockerfile `ENV MONGODB_URL=mongodb`
+- Build the image `docker build -t goals-node ./backend`
+- Create new repository in docker hub, tag the image `docker tag goals-node gabrielcmoris/goals-node` and push the image `docker push  gabrielcmoris/goals-node`
+- In amazon ECS click in "create a new cluster" and give a name
+- Click in create new VPC to have a private cloud for this cluster and wait
+- Click on view cluster and click in the tab tasks. Create a new task definition. Name it and give it the role of `ecsTaskExecutionRole`.
+- Click in "Add Container" and name it. and in image use the docker hub image: `gabrielcmoris/goals-node`. Port Mappings `80`. In Command `node,app.js`
+- Specify the ENV variables from the backend. For the MONGODB_URL we use `localhost` instead of mongodb.
+- Click Add
