@@ -132,3 +132,15 @@ NOTE: To update the app I make the changes locally, I reupload to docker hub, go
 - Go to cluster:goals-app
 - Click in goals-service. Click "Update" in top right
 - check force Deployment. Click "Skip to review"
+
+6. Add Volume for persistent Data
+
+- Go to amazon ECS > task definitions > click on goals and pick the latest
+- Click on create new revision. Scroll wown and click on add volume. Add Name, type EFS, click on Amazon EFS console to create a file system
+  - Click on create file system. Name it. Use the same VPC as before. Click in "Customize"
+  - In step 2 "Network access". I wait meanwhile I go to security ggroups and I create a new security group. Name it, for example "efs-sc". Same VPC as always. Click on add Inbound ruule > Choose `NFS`. in Source > `Custom` and choose the same security group I use in the containers. Click on "Create"
+  - Back in "Network access" I choose the security group I created for the Mount Targets
+  - Click "next" all the time and then "Create"
+- Back on new revision I choose the file system I created. Click "Add"
+- Go to up and choose the container mongodb. Scroll to STORAGE AND LOGGING and in Mount points choose the one I created an path \<container name \>/db
+- Click update and Create. Then in "Actions" I choose "Update Service", I check the Force New Deployment, "Skip to review" and "Update Service"
