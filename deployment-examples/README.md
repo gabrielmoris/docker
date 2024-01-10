@@ -64,6 +64,8 @@ NOTE: To update the app I make the changes locally, I reupload to docker hub, go
 
 ## Deployment multiple containers with a Managed Remote Machine with AWS ECS.
 
+1. Prepare the container and upload it to docker hub
+
 - We have to make a change in the docker connection endpoint for ECS:
   `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@mongodb:27017/course-goals?authSource=admin`
   should be changed to:
@@ -71,9 +73,50 @@ NOTE: To update the app I make the changes locally, I reupload to docker hub, go
   , add in the /env/backend.env `MONGODB_URL=mongodb`, and in the backend Dockerfile `ENV MONGODB_URL=mongodb`
 - Build the image `docker build -t goals-node ./backend`
 - Create new repository in docker hub, tag the image `docker tag goals-node gabrielcmoris/goals-node` and push the image `docker push  gabrielcmoris/goals-node`
+
+2. Create ECS Cluster with 2 images (Mongo and Backend)
+
 - In amazon ECS click in "create a new cluster" and give a name
 - Click in create new VPC to have a private cloud for this cluster and wait
 - Click on view cluster and click in the tab tasks. Create a new task definition. Name it and give it the role of `ecsTaskExecutionRole`.
-- Click in "Add Container" and name it. and in image use the docker hub image: `gabrielcmoris/goals-node`. Port Mappings `80`. In Command `node,app.js`
-- Specify the ENV variables from the backend. For the MONGODB_URL we use `localhost` instead of mongodb.
-- Click Add
+
+  a) Add Backend Image from Docker Hub
+
+  - Click in "Add Container" and name it for example "goals". and in image use the docker hub image: `gabrielcmoris/goals-node`. Port Mappings `80`. In Command `node,app.js`
+  - Specify the ENV variables from the backend.env. For the MONGODB_URL we use `localhost` instead of mongodb.
+  - Click Add
+
+  b) Add MongoDb Image
+
+  - Click in "Add Container". Give name, choose the image `mongo` from Docker hub official image, choose port `27017` (the Oficial default for mongodb.)
+  - Specify the ENV variables from the mongo.env. `MONGO_INITDB_ROOT_USERNAME=max` `MONGO_INITDB_ROOT_PASSWORD=secret`
+  - Click Add
+  - Click in Create
+
+3. Launch the service
+
+- Go to clusters > goals-app > in Services click "create":
+
+  - Choose Fargate
+  - Choose goals in Task Definiton
+  - Service name "goals-service"
+  - Number of tasks: 1
+  - click "Next Step"
+  - Choose the cluster VPC and the subnets
+  - Auto-assign public IP should be ENABLED
+  - Load balancer type : Application Load Balancer
+  - **Create Load Balancer**
+
+    - Choose create application load balancer. Name it. Export in port 80. Choose the same VPC as the cluster.
+    - Click on configure security groups. Select an existing security group and choose the default VPC security group
+    - Choose a new target group. Name it. choose Target type: IP.
+    - Click "Register Targets", "Review" and then "Create"
+
+  - Choose the load balancer I created and the container name :port and click in "Add to load balancer"
+  - Click "Next step" and "Next step" again and afterwards "Create Service"
+
+4. See the public IP
+
+- Go to clusters > goals-app > services and click in goals-service
+- Click in tab Tasks and in the task. There I have the public IP
+- The service would be successful created in \<IP>\/goals
