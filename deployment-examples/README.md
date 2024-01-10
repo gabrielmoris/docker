@@ -119,4 +119,9 @@ NOTE: To update the app I make the changes locally, I reupload to docker hub, go
 
 - Go to clusters > goals-app > services and click in goals-service
 - Click in tab Tasks and in the task. There I have the public IP
+  If there Is an error :
+
+  - Go to Target Groups Edit the Healt Check Settings and in path write /goals
+  - Go to Load Balancer > Edit security groups and add the goals as well
+
 - The service would be successful created in \<IP>\/goals
