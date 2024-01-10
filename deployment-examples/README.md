@@ -125,3 +125,10 @@ NOTE: To update the app I make the changes locally, I reupload to docker hub, go
   - Go to Load Balancer > Edit security groups and add the goals as well
 
 - The service would be successful created in \<IP>\/goals
+
+5. Update the service
+
+- Upload the new version to docker hub
+- Go to cluster:goals-app
+- Click in goals-service. Click "Update" in top right
+- check force Deployment. Click "Skip to review"
