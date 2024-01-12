@@ -144,3 +144,16 @@ NOTE: To update the app I make the changes locally, I reupload to docker hub, go
 - Back on new revision I choose the file system I created. Click "Add"
 - Go to up and choose the container mongodb. Scroll to STORAGE AND LOGGING and in Mount points choose the one I created an path \<container name \>/db
 - Click update and Create. Then in "Actions" I choose "Update Service", I check the Force New Deployment, "Skip to review" and "Update Service"
+
+7. It would be more covenient in production if we use Mongo Atlas instead of another container
+
+- Build a new cluster
+- Connect to the new container in `/backend/app.js` using from monto the connection endpoint: `mongodb+srv://{process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@$${process.env.MONGODB_URL}/${process.env.MONGODB_DATABASE}?retryWrites=true&w=majority`
+- Delete the mongo container, the depends_on mongodb, and the volumes in docker-compose
+- Go in Mongo atlas to network address and allow access to the ip or to all
+- Reupload the Image in docker hub. `docker build -t goals-node ./backend` `docker tag goals-node gabrielcmoris/goals-node` `docker push  gabrielcmoris/goals-node`
+- delete the volume and the container of docker in ECS.
+  - Click in Task Definitions > Goals > click in last Task definition > Create new revision
+  - delete mongo container, volume, go to EFS and delete the EFS as well, go to EC2 > Security Groups > Delete the security group of the EFS
+- Change the ENV. Click in container Goals-backend
+- Accept, Click Actions > Update Service > check Force Deployment > Skip to review > Update Service
