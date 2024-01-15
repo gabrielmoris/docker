@@ -47,7 +47,7 @@ docker version
 
     a) Back in aws in instances I can see the ipv4 to reach the app. But still is not public, In the tab of the left I can go to "Security groups" and there I can see the security group created with my instance and the other ones I have.
     b) I click on the security group of the instance. I click on edit the Inbound rules.
-    c) I add a new rule: Type: http, Source: Anywhere and save. Copu the ipv4 of the instance and paste it on the browser.
+    c) I add a new rule: Type: http, Source: Anywhere and save. Copy the ipv4 of the instance and paste it on the browser.
 
 NOTE: To update the app I make the changes locally, I reupload to docker hub, and In the ec2 container I stop and rebuild the image.
 
@@ -133,7 +133,7 @@ NOTE: To update the app I make the changes locally, I reupload to docker hub, go
 - Click in goals-service. Click "Update" in top right
 - check force Deployment. Click "Skip to review"
 
-6. Add Volume for persistent Data
+6a. Add Volume for persistent Data (If I use Mongo Atlas I dont need it)
 
 - Go to amazon ECS > task definitions > click on goals and pick the latest
 - Click on create new revision. Scroll wown and click on add volume. Add Name, type EFS, click on Amazon EFS console to create a file system
@@ -145,15 +145,21 @@ NOTE: To update the app I make the changes locally, I reupload to docker hub, go
 - Go to up and choose the container mongodb. Scroll to STORAGE AND LOGGING and in Mount points choose the one I created an path \<container name \>/db
 - Click update and Create. Then in "Actions" I choose "Update Service", I check the Force New Deployment, "Skip to review" and "Update Service"
 
-7. It would be more covenient in production if we use Mongo Atlas instead of another container
+6b. It would be more covenient in production if we use Mongo Atlas instead of another container
 
 - Build a new cluster
 - Connect to the new container in `/backend/app.js` using from monto the connection endpoint: `mongodb+srv://{process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@$${process.env.MONGODB_URL}/${process.env.MONGODB_DATABASE}?retryWrites=true&w=majority`
-- Delete the mongo container, the depends_on mongodb, and the volumes in docker-compose
+- Delete the mongo container If I did, the depends_on mongodb, and the volumes in docker-compose
 - Go in Mongo atlas to network address and allow access to the ip or to all
 - Reupload the Image in docker hub. `docker build -t goals-node ./backend` `docker tag goals-node gabrielcmoris/goals-node` `docker push  gabrielcmoris/goals-node`
-- delete the volume and the container of docker in ECS.
+- delete the volume and the container of docker in ECS if I did.
   - Click in Task Definitions > Goals > click in last Task definition > Create new revision
   - delete mongo container, volume, go to EFS and delete the EFS as well, go to EC2 > Security Groups > Delete the security group of the EFS
 - Change the ENV. Click in container Goals-backend
 - Accept, Click Actions > Update Service > check Force Deployment > Skip to review > Update Service
+
+7. Add Frontend
+
+- Create the `Dockerfile.prod` to create 2 environments: dev/prod. Prod needs the build proccess and serve the files to the browser
+- We will need a **multi-stage build**:
+  -
