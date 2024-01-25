@@ -1,11 +1,5 @@
 version: "3.8"
 services:
-  # mongodb:
-  #   image: 'mongo'
-  #   volumes:
-  #     - data:/data/db
-  #   env_file:
-  #     - ./env/mongo.env
   backend:
     build: ./backend
     ports:
@@ -15,10 +9,9 @@ services:
       - /app/node_modules
     env_file:
       - ./env/backend.env
-    # depends_on:
-    #   - mongodb
-  # volumes:
-  #   data:
+    depends_on:
+      - mongodb
+
   frontend:
     build: ./frontend
     ports:
@@ -29,3 +22,12 @@ services:
     tty: true
     depends_on:
       - backend
+  # IF I use Mongo atlas I just delete all this
+  mongodb:
+    image: "mongo"
+    volumes:
+      - data:/data/db
+    env_file:
+      - ./env/mongo.env
+volumes:
+  data:
