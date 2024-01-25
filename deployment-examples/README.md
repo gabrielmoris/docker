@@ -162,4 +162,17 @@ NOTE: To update the app I make the changes locally, I reupload to docker hub, go
 
 - Create the `Dockerfile.prod` to create 2 environments: dev/prod. Prod needs the build proccess and serve the files to the browser
 - We will need a **multi-stage build**:
-  -
+  - in `deployment-examples/awsECS- multicontainers/frontend/Dockerfile.prod` We change the Dockerfile to change the image when we dont need Node anymore.
+  - The comand `COPY --from=build /app/build /usr/share/nginx/html` will copy the build from the last image to the path where Nginx serve the websites
+  - all the Fetch request from app should change from `const response = await fetch("http://localhost/goals");` to `const response = await fetch(backendUrl + "/goals");` because localhost would refer as the browser, not the container. The URL comes from:
+  ```javascript
+  const backendUrl =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost"
+      : "urlFromLoadBalancerfromAWS";
+  ```
+  - Build the image `docker build -f frontend/Dockerfile.prod -t gabrielcmoris/goals-react ./frontend`
+  - Push the image to docker hub `docker push gabrielcmoris/goals-react`
+- Create in AWS a new task revision, add container and Use the image I pushed. I cant put the container in the same task as backend because both work in port 80
+  - Create a service based on the task. Launch type: Fargate, Cluster: goals-app, Number of tasks:1, service name: goals-react. Click next.
+  - Add the 2 subnets, use the existent security group instead of the default, add an application load balancer, choose goals-react-lb as a load balancer name, choose react-tg as a target group name.click next step until create.
