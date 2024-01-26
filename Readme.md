@@ -1,4 +1,28 @@
-## In detail, this course includes the following topics:
+# docker core Concepts
+
+## Basics
+
+**Containers**: Isolated "boxes" that contain our code and the environment needed to run it. 1 container must be focused in only 1 task.
+**Images**: Created by docker files. They contain the code and the envidonment. They are the blueprint of the container and are readonly
+
+## Basic commands
+
+1. Build an Image
+   `docker build -t <NAME:TAG> <path of dockerfile> `
+2. Run a container based on a remote or local storage
+   `docker run --name <name> --rm -d <IMAGE>` --rm => remove after stopping; -d detached mode
+3. Push and pull to docker hub
+   `docker push <REPOSITORY/NAME:TAG>` `docker pull <REPOSITORY/NAME:TAG>`
+
+## Bind Mounts & Volumes
+
+**Bind Mounts**: Used to connect to host machine folders
+`-v /local/path:/container/path`
+
+**Volume**: Used to persist the data
+`-v NAME:/container/path`
+
+<!-- ## In detail, this course includes the following topics:
 
     A thorough introduction to Docker, containers and why you might want to use Docker
 
@@ -41,4 +65,4 @@
     Learn how to create and use Images & Containers with Docker
     Understand complex topics like managing and persisting data with Volumes
     Learn about Container Networking with Docker Networks and DNS Service Discovery
-    Learn how to deploy Docker applications - manually, with managed services or with Kubernetes
+    Learn how to deploy Docker applications - manually, with managed services or with Kubernetes -->
