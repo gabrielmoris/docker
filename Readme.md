@@ -22,6 +22,10 @@
 **Volume**: Used to persist the data
 `-v NAME:/container/path`
 
+## Networks and Container communication
+
+**Create a docker network**: Using a network, containers can communicate with each other
+
 <!-- ## In detail, this course includes the following topics:
 
     A thorough introduction to Docker, containers and why you might want to use Docker
