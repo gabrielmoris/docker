@@ -1,4 +1,4 @@
-# docker core Concepts
+# Docker core Concepts
 
 ## Basics
 
@@ -24,7 +24,27 @@
 
 ## Networks and Container communication
 
-**Create a docker network**: Using a network, containers can communicate with each other
+**Create a docker network**: Using a network, containers can communicate with each other.
+
+## Docker-compose
+
+Allows to pre-define the build and run steps in a .yaml file. It is specially helpful in multiple containers project.
+
+To call this file I use in the .yaml path the command `docker-compose up`. To stop the services I use `docker-compose down`
+
+## Deploy considerations
+
+- Replace **Bind Mounts** with Volumes or COPY
+- Multiple containers might need multiple hosts
+- Multi-stage Builds help with apps that need a build step
+
+* **Control** : EC2 remote server, install Docker and run containers.
+* **Ease-of-use**: ECS managed server, write the commands in AWS
+
+# Kubernetes
+
+Is a open-source system for orchestrating container deployments. It helps with **Automatic Deployment**, **Scaling & load balancing** and **Management**
+![Kubernetes Architecture and concepts](image.png)
 
 <!-- ## In detail, this course includes the following topics:
 
