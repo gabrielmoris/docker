@@ -44,7 +44,28 @@ To call this file I use in the .yaml path the command `docker-compose up`. To st
 # Kubernetes
 
 Is a open-source system for orchestrating container deployments. It helps with **Automatic Deployment**, **Scaling & load balancing** and **Management**
-![Kubernetes Architecture and concepts](image.png)
+![Kubernetes Architecture and concepts](kubernetes-architecture.png)
+![Worker Node](workernode.png)
+
+**Core Concepts**:
+
+- Cluster: Set of Node machines which are running Containerized.
+- Nodes: Physical or virtual machine which hosts one or multiple Pods and communicates with the Cluster
+  - Master Node: Control Plane of the cluster. It manages the pods across Worker nodes
+  - Worker Node: Machines Hosting Pods and running app containers
+- Pods: Application Containers + needed Resources (for example Volumes)
+- Containers: Regular Docker Containers
+- Services: A Logical set of Pods with a unique Pod - / Continer- independent IP adress
+
+## Installation
+
+1. Install [chocolatey](https://chocolatey.org/)
+2. in Docker Desktop enable kubernetes or run in CMD `choco install kubernetes-cli`
+3. in CMD run `choco install minikube`
+4. If I want to have a virtualbox (with docker I dont need) install [virtualbox](https://www.virtualbox.org/)
+5. To run the minikube in CMD run `minikube start --driver=docker`
+6. Run `minikube status` to check if the minikube is runing or `minikube delete` to delete the virtual machine
+7. Run `minikube dashboard` to open a tab with the cubernetes information in the browser
 
 <!-- ## In detail, this course includes the following topics:
 
