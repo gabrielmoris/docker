@@ -67,6 +67,18 @@ Is a open-source system for orchestrating container deployments. It helps with *
 6. Run `minikube status` to check if the minikube is runing or `minikube delete` to delete the virtual machine
 7. Run `minikube dashboard` to open a tab with the cubernetes information in the browser
 
+## Kubernetes Objects
+
+Can be declared imperatively or declaratively
+
+### Pod Object
+
+Runs one or more containers and contain shared resources (volumes). They have a cluster-internal IP. They loose all the data when they are stopped (like containers)
+
+### Deployment Object
+
+Controls one or multiple Pods
+
 <!-- ## In detail, this course includes the following topics:
 
     A thorough introduction to Docker, containers and why you might want to use Docker
