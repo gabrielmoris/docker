@@ -1,0 +1,22 @@
+apiVersion: apps/v1 # search in https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.23/#-strong-api-groups-strong-
+kind: Deployment
+metadata:
+  name: second-app-deployment
+spec: # this spec is the config of the deployment
+  replicas: 1 # number of pods
+  selector: # HEre I specify which pods are controlled by the deployment
+    matchLabels:
+      app: second-app
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: second-app
+        tier: backend
+    spec: # This spec is the config of the individual pod
+      containers:
+        - name: second-node
+          image:
+            gabrielcmoris/kubernetes-first-app:v2
+            # - name: ... I can have more
+        # - image: ...
