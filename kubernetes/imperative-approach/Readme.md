@@ -36,4 +36,9 @@ To delete the service and deployment run `kubectl delete service first-app` and 
 
 # Start Kubernetes in declarative Approach
 
-It is possible to start kubernetes in the same way as docker compose. Creating a file `deployment.yaml` and run the command `kubectl apply -f=deployment.yaml`
+It is possible to start kubernetes in the same way as docker compose.
+
+- For Deployment I create a file `deployment.yaml` and run the command `kubectl apply -f deployment.yaml`
+- For Service I create a file `service.yaml` and run the command `kubectl apply -f service.yaml`
+- To see the app in browser I run `minikube service backend`
+- To delete the deployment I run `kubectl delete -f deployment.yaml`

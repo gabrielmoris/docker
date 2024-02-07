@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec: # Here I specify which ods are managed by this service
+  selector:
+    app: second-app
+  ports:
+    - protocol: "TCP"
+      port: 80 # Where it is exposed
+      targetPort: 8080 # Where is the app listening
+  type: LoadBalancer

@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: second-app-deployment
 spec: # this spec is the config of the deployment
-  replicas: 1 # number of pods
+  replicas: 2 # number of pods
   selector: # HEre I specify which pods are controlled by the deployment
     matchLabels:
       app: second-app
@@ -16,7 +16,6 @@ spec: # this spec is the config of the deployment
     spec: # This spec is the config of the individual pod
       containers:
         - name: second-node
-          image:
-            gabrielcmoris/kubernetes-first-app:v2
-            # - name: ... I can have more
-        # - image: ...
+          image: gabrielcmoris/kubernetes-first-app
+          # - name: ... I can have more
+          # - image: ...
