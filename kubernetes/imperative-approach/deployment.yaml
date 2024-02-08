@@ -4,7 +4,7 @@ metadata:
   name: second-app-deployment
 spec: # this spec is the config of the deployment
   replicas: 2 # number of pods
-  selector: # HEre I specify which pods are controlled by the deployment
+  selector: # Here I specify which pods are controlled by the deployment
     matchLabels:
       app: second-app
       tier: backend

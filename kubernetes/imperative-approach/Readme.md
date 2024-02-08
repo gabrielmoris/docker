@@ -41,4 +41,5 @@ It is possible to start kubernetes in the same way as docker compose.
 - For Deployment I create a file `deployment.yaml` and run the command `kubectl apply -f deployment.yaml`
 - For Service I create a file `service.yaml` and run the command `kubectl apply -f service.yaml`
 - To see the app in browser I run `minikube service backend`
-- To delete the deployment I run `kubectl delete -f deployment.yaml`
+- To delete the deployment I run `kubectl delete -f deployment.yaml -f service.yaml`
+- It is possible to have all the resources in a single file, like `master-deployment.yaml`. There I can separate every resource with `---`. It is a good practice to put the service first. `kubectl apply -f master-deployment.yaml`

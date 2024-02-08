@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  labels:
+    group: example
+spec:
+  selector:
+    app: second-app
+  ports:
+    - protocol: "TCP"
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: second-app-deployment
+  labels:
+    group: example
+spec:
+  replicas: 2
+  selector:
+    # This is one way to select the pods
+    matchLabels:
+      app: second-app
+      tier: backend
+    # This is another way. Where I can do more configurations
+    # matchExpressions:
+    #   - { key: app, operator: In, values: [second-app, first-app] } # the operator means if the values are included (In) or excluded (NotIn) or another possible options
+  template:
+    metadata:
+      labels:
+        app: second-app
+        tier: backend
+    spec:
+      containers:
+        - name: second-node
+          image: gabrielcmoris/kubernetes-first-app
+          imagePullPolicy: Always
+          lifvenessProbe: # this will check if the pod is working correctly
+            httpGet:
+              path: /
+              port: 8080
+            periodSeconds: 10
+            initialDelaySeconds: 5
