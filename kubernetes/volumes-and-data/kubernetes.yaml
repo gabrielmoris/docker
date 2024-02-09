@@ -1,9 +1,39 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: host-pv
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  storageClassName: standard # this name comes fro the default volume from minikube.  `kubectl get sc`
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data
+    type: DirectoryOrCreate
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: host-pvc
+spec:
+  volumeName: host-pv
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 1Gi
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: story-deployment
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: story
@@ -16,14 +46,23 @@ spec:
         - name: story
           image: gabrielcmoris/kub-data-demo:1
           volumeMounts:
-            - mountPath: /app/story # following the path specified in app.js
+            - mountPath: /app/story
               name: story-volume
       volumes:
         - name: story-volume
-          # emptyDir: {} # Creates an empty directory when the pod starts and keeps it meanwhile the pod exists.
-          hostPath:
-            path: /data # Path on the host machine.
-            type: DirectoryOrCreate # It is a directore and if is not in the machine, it creates it
+          persistentVolumeClaim:
+            claimName: host-pvc
+      # Here I create a Volume only in the POD
+      #     volumeMounts:
+      #       - mountPath: /app/story # following the path specified in app.js
+      #         name: story-volume
+      # volumes:
+      #   - name: story-volume
+      #     # emptyDir: {} # Creates an empty directory when the pod starts and keeps it meanwhile the pod exists.
+      #     hostPath:
+      #       path: /data # Path on the host machine.
+      #       type: DirectoryOrCreate # It is a directore and if is not in the machine, it creates it
+
 ---
 apiVersion: v1
 kind: Service
