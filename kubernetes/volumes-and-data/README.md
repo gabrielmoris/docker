@@ -13,3 +13,17 @@ There are a lot of different volume types depending on the service where the pro
 - `docker push gabrielcmoris/kub-data-demo`
 - `kubectl apply -f kubernetes.yaml`
 - `minikube service story-service` // From the metadata of Service in kubernetes.yaml
+
+## Type of volumes
+
+### emptyDir:
+
+It is a basic Volume, but when I have several replicas the second replica doesn't have access to the volumen because it is inside of each POD
+
+### hostPath:
+
+It creates a directory on the host machine where all pods and containers **on the same nod** have access
+
+### CSI
+
+A very flexible volume type. It depends on if the service (for example AWS) has the drivers.

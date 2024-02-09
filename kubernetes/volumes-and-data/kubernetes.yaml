@@ -14,8 +14,16 @@ spec:
     spec:
       containers:
         - name: story
-          image: gabrielcmoris/kub-data-demo
-
+          image: gabrielcmoris/kub-data-demo:1
+          volumeMounts:
+            - mountPath: /app/story # following the path specified in app.js
+              name: story-volume
+      volumes:
+        - name: story-volume
+          # emptyDir: {} # Creates an empty directory when the pod starts and keeps it meanwhile the pod exists.
+          hostPath:
+            path: /data # Path on the host machine.
+            type: DirectoryOrCreate # It is a directore and if is not in the machine, it creates it
 ---
 apiVersion: v1
 kind: Service
