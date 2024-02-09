@@ -33,3 +33,9 @@ A very flexible volume type. It depends on if the service (for example AWS) has 
 ## Persistent Modules
 
 Are Pod and Node independent and therefore persist. In this case the Volume is outside of the Pods and the pods need a volumeclaim to have access to it.
+
+# .Env
+
+It is possible to make an environment.yaml file to store the environment to use in the deployment
+
+afterwards can call both folders in kubectl: `kubectl apply -f environment.yaml -f kubernetes.yaml`

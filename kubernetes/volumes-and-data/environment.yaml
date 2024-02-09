@@ -1,0 +1,7 @@
+# This is equivalent to the .env but to use in the kubernetes.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: data-store-env
+data:
+  folder: "story"
