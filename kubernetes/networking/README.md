@@ -4,7 +4,7 @@
 
 ![alt text](image.png)
 
-### Start project
+## Start project
 
 - Enable virtual machine (minikube) `minikube start --driver=docker`
 - For the beginning, hardcode in `users-app.js` all the calls to `/auth`, then When I enable the /auth I can revert the changes
@@ -57,3 +57,9 @@ containers:
 - We also need to create the container `minikube service tasks-service`
 
 -to stop run `kubectl delete -f users-deployment.yaml -f users-service.yaml -f auth-deployment.yaml -f auth-service.yaml -f tasks-deployment.yaml -f tasks-service.yaml`
+
+## Add Frontend
+
+- Inside App.js I change the ips for the ips currently running in the minikube
+- Start the minikube services `minikube service tasks-service` & `minikube service users-service` and copy the url of Tasks in App.js
+- Build and upload project `docker build -t gabrielcmoris/kub-demo-frontend .` and run it `docker run -p 80:80 --rm  gabrielcmoris/kub-demo-frontend`
