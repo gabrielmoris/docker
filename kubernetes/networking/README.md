@@ -62,4 +62,16 @@ containers:
 
 - Inside App.js I change the ips for the ips currently running in the minikube
 - Start the minikube services `minikube service tasks-service` & `minikube service users-service` and copy the url of Tasks in App.js
-- Build and upload project `docker build -t gabrielcmoris/kub-demo-frontend .` and run it `docker run -p 80:80 --rm  gabrielcmoris/kub-demo-frontend`
+- Build and upload project `docker build -t gabrielcmoris/kub-demo-frontend .` and run it `docker run -p 80:80 --rm  gabrielcmoris/kub-demo-frontend`. When it works, push it `docker push gabrielcmoris/kub-demo-frontend`
+- Afterwards we can reapply everything `kubectl apply -f users-deployment.yaml -f users-service.yaml -f auth-deployment.yaml -f auth-service.yaml -f tasks-deployment.yaml -f tasks-service.yaml -f frontend-deployment.yaml -f frontend-service.yaml`
+
+- To stop we can reapply everything `kubectl delete -f users-deployment.yaml -f users-service.yaml -f auth-deployment.yaml -f auth-service.yaml -f tasks-deployment.yaml -f tasks-service.yaml -f frontend-deployment.yaml -f frontend-service.yaml`
+- To not hardcode the enpoint address in the frontend I can use a reverse proxy. The good thing is tha the nginx doesnt run in the browser but in the server. That means I can use the internal domain name and tedirect all the /api calls there. In the nginx.conf I can add
+
+  ```
+  location /api/ {
+    proxy_pass http://tasks-service.default:8000/;
+  }
+  ```
+
+- run `minikube service frontend-service` as well as `minikube service tasks-service`
