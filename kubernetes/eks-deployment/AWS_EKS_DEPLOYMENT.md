@@ -90,3 +90,5 @@ volumes:
     persistentVolumeClaim:
       claimName: efs-pvc
 ```
+
+- With the command `kubectl get services` I can see the external IP from AWS
