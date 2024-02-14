@@ -1,3 +1,35 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: efs-sc
+provisioner: efs.csi.aws.com
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: efs-pv
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  storageClassName: efs-sc
+  csi:
+    driver: efs.csi.aws.com
+    volumeHandle: <filesystem ID from AWS>
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: efs-pvc
+spec:
+  accessModes: -ReadWriteMany
+  storageClassName: efs-sc
+  resources:
+    requests:
+      storage: 5Gi
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -28,8 +60,26 @@ spec:
       containers:
         - name: users-api
           image: academind/kub-dep-users:latest
+          # env:
+          #   - name: MONGODB_CONNECTION_URI
+          #     value: 'mongodb+srv://<user:password>@cluster0.ntrwp.mongodb.net/users?retryWrites=true&w=majority'
+          #   - name: AUTH_API_ADDRESS
+          #     value: 'auth-service.default:3000'
           env:
             - name: MONGODB_CONNECTION_URI
-              value: 'mongodb+srv://maximilian:wk4nFupsbntPbB3l@cluster0.ntrwp.mongodb.net/users?retryWrites=true&w=majority'
-            - name: AUTH_API_ADDRESSS
-              value: 'auth-service.default:3000'
+              valueFrom:
+                configMapKeyRef:
+                  name: users-env
+                  key: mongo
+            - name: AUTH_API_ADDRESS
+              valueFrom:
+                configMapKeyRef:
+                  name: users-env
+                  key: authapi
+          volumeMounts:
+            - name: efs-vol
+              mountPath: /app/users
+      volumes:
+        - name: efs-vol
+          persistentVolumeClaim:
+            claimName: efs-pvc

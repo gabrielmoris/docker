@@ -1,0 +1,8 @@
+# This is equivalent to the .env but to use in the kubernetes.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: users-store-env
+data:
+  mongo: "mongodb+srv://maximili[...]majority"
+  authapi: "auth-service.default:3000"

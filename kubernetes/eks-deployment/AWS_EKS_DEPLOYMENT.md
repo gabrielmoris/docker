@@ -32,3 +32,61 @@ It is a managed service for Kubernetes deployments
 ### Apply kubernetes config
 
 - In the console I can run exactly how I did with Minikube `kubectl apply -f auth.yaml -f users.yaml` (images should be pushed in docker hub)
+
+### add Volumes
+
+- I need to run in my kubernetes (conected in aws) the command from this [Docummentation](https://github.com/kubernetes-sigs/aws-efs-csi-driver) `kubectl apply -k "github.com/kubernetes-sigs/aws-efs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.0"`
+- Create a EFS in AWS:
+  - For that first I go to EC2 > Security gropues > create > choose in VPC the eksVpc I have >add inbound rule (NFS, custom, copy the IP from the eksVPC)
+  - Create and choose the eksVPC > customice Z In Network access delete the security groups and use the ones I choose > create. Copy the filesystemID
+- create the persistent volume in users
+
+```yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: efs-sc
+provisioner: efs.csi.aws.com
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: efs-pv
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  storageClassName: efs-sc
+  csi:
+    driver: efs.csi.aws.com
+    volumeHandle: <filesystem ID from AWS>
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: efs-pvc
+spec:
+  accessModes: -ReadWriteMany
+  storageClassName: efs-sc
+  resources:
+    requests:
+      storage: 5Gi
+---
+```
+
+- In the user deployment also add the claim volume:
+
+```yaml
+volumeMounts:
+  - name: efs-vol
+    mountPath: /app/users
+```
+
+```yaml
+volumes:
+  - name: efs-vol
+    persistentVolumeClaim:
+      claimName: efs-pvc
+```
